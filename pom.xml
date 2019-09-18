@@ -358,6 +358,10 @@
                             <pattern>com.sun.jersey</pattern>
                             <shadedPattern>${ranger.spark.package}.jersey</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>javax.ws.rs</pattern>
+                            <shadedPattern>${ranger.spark.package}.javax.ws.rs</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
