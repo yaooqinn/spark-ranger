@@ -332,7 +332,6 @@
                 <version>3.1.1</version>
                 <configuration>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <createSourcesJar>true</createSourcesJar>
                     <artifactSet>
                         <includes>
                             <include>com.google.code.gson:gson</include>
