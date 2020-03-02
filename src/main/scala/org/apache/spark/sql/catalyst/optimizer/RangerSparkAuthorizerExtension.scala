@@ -24,9 +24,10 @@ import org.apache.spark.sql.catalyst.plans.logical.{Command, LogicalPlan}
 import org.apache.spark.sql.catalyst.rules.Rule
 import org.apache.spark.sql.execution.command._
 import org.apache.spark.sql.execution.datasources.{CreateTempViewUsing, InsertIntoDataSourceCommand, InsertIntoHadoopFsRelationCommand}
-import org.apache.spark.sql.execution.{RangerShowDatabasesCommand, RangerShowTablesCommand}
+import org.apache.spark.sql.execution.{RangerShowDatabasesCommand, RangerShowTablesCommand, RangerSparkPlanOmitStrategy}
 import org.apache.spark.sql.hive.PrivilegesBuilder
 import org.apache.spark.sql.hive.execution.CreateHiveTableAsSelectCommand
+import scala.reflect.runtime.{universe => ru}
 
 /**
  * An Optimizer Rule to do Hive Authorization V2 for Spark SQL.
@@ -50,6 +51,10 @@ case class RangerSparkAuthorizerExtension(spark: SparkSession) extends Rule[Logi
     plan match {
       case s: ShowTablesCommand => RangerShowTablesCommand(s)
       case s: ShowDatabasesCommand => RangerShowDatabasesCommand(s)
+      case s: SetCommand =>
+        authorizeSetCommand(s)
+
+        s
       case r: RangerShowTablesCommand => r
       case r: RangerShowDatabasesCommand => r
       case _ =>
@@ -73,6 +78,48 @@ case class RangerSparkAuthorizerExtension(spark: SparkSession) extends Rule[Logi
             throw ace
         }
     }
+  }
+
+  private def authorizeSetCommand(s: SetCommand) = {
+    s.kv match {
+      case Some(kv) => {
+        /**
+         * This is needed since Spark 2.4, which included a new configuration that allows to exclude some
+         * rules on the Optimizer, which would deactivate all Ranger's authorization.
+         *
+         * In the future, if Spark allows to configure the rules that can not be excluded, this check will not
+         * be necessary. At the moment, the list of non excludable rules is hardcoded on Spark's optimizer.
+         */
+        if (kv._1.equalsIgnoreCase("spark.sql.optimizer.excludedRules") && isRangerExtension(kv._2)) {
+          val ace = new SparkAccessControlException("Ranger extensions are not allowed to be excluded")
+          LOG.error(
+            s"""
+               |+===============================+
+               ||Spark SQL Authorization Failure|
+               ||-------------------------------|
+               ||${ace.getMessage}
+               ||-------------------------------|
+               ||Spark SQL Authorization Failure|
+               |+===============================+
+               """.
+
+              stripMargin)
+
+          throw
+            ace
+        }
+      }
+      case _ => ()
+    }
+  }
+
+  private def isRangerExtension(excluded: Option[String]) = {
+    excluded.exists(s =>
+      s.contains(ru.typeTag[RangerSparkAuthorizerExtension].tpe.toString) ||
+        s.contains(ru.typeTag[RangerSparkRowFilterExtension].tpe.toString) ||
+        s.contains(ru.typeTag[RangerSparkMaskingExtension].tpe.toString) ||
+        s.contains(ru.typeTag[RangerSparkPlanOmitStrategy].tpe.toString)
+    )
   }
 
   /**

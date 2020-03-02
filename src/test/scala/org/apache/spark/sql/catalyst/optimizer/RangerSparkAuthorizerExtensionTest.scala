@@ -21,6 +21,7 @@ import org.apache.ranger.authorization.spark.authorizer.SparkAccessControlExcept
 import org.apache.spark.sql.hive.test.TestHive
 import org.scalatest.FunSuite
 import org.apache.spark.sql.RangerSparkTestUtils._
+import org.apache.spark.sql.execution.command.SetCommand
 import org.apache.spark.sql.execution.{RangerShowDatabasesCommand, RangerShowTablesCommand}
 
 class RangerSparkAuthorizerExtensionTest extends FunSuite {
@@ -32,6 +33,20 @@ class RangerSparkAuthorizerExtensionTest extends FunSuite {
     val plan = df.queryExecution.optimizedPlan
     val newPlan = extension.apply(plan)
     assert(newPlan.isInstanceOf[RangerShowTablesCommand])
+    assert(extension.apply(newPlan) === newPlan)
+  }
+
+  test("ranger rule can not be excluded via a set command") {
+    val df = spark.sql("SET spark.sql.optimizer.excludedRules=org.apache.spark.sql.catalyst.optimizer.RangerSparkAuthorizerExtension")
+
+    intercept[SparkAccessControlException](extension.apply(df.queryExecution.optimizedPlan))
+  }
+
+  test("non ranger rules can be excluded via a set command") {
+    val df = spark.sql("SET spark.sql.optimizer.excludedRules=some.namespace.classname")
+    val plan = df.queryExecution.optimizedPlan
+    val newPlan = extension.apply(plan)
+    assert(newPlan.isInstanceOf[SetCommand])
     assert(extension.apply(newPlan) === newPlan)
   }
 
