@@ -27,7 +27,6 @@ import org.apache.spark.sql.execution.datasources.{CreateTempViewUsing, InsertIn
 import org.apache.spark.sql.execution.{RangerShowDatabasesCommand, RangerShowTablesCommand, RangerSparkPlanOmitStrategy}
 import org.apache.spark.sql.hive.PrivilegesBuilder
 import org.apache.spark.sql.hive.execution.CreateHiveTableAsSelectCommand
-import scala.reflect.runtime.{universe => ru}
 
 /**
  * An Optimizer Rule to do Hive Authorization V2 for Spark SQL.
@@ -97,10 +96,10 @@ case class RangerSparkAuthorizerExtension(spark: SparkSession) extends Rule[Logi
   }
 
   private def containsRangerExtension(excluded: String) = {
-      excluded.contains(ru.typeTag[RangerSparkAuthorizerExtension].tpe.toString) ||
-        excluded.contains(ru.typeTag[RangerSparkRowFilterExtension].tpe.toString) ||
-        excluded.contains(ru.typeTag[RangerSparkMaskingExtension].tpe.toString) ||
-        excluded.contains(ru.typeTag[RangerSparkPlanOmitStrategy].tpe.toString)
+    excluded.contains(classOf[RangerSparkAuthorizerExtension].getName) ||
+        excluded.contains(classOf[RangerSparkRowFilterExtension].getName) ||
+        excluded.contains(classOf[RangerSparkMaskingExtension].getName) ||
+        excluded.contains(classOf[RangerSparkPlanOmitStrategy].getName)
   }
 
   /**
