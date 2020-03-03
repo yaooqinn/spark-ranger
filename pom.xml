@@ -384,6 +384,10 @@
                             <pattern>javax.ws.rs</pattern>
                             <shadedPattern>${ranger.spark.package}.javax.ws.rs</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.codehaus</pattern>
+                            <shadedPattern>${ranger.spark.package}.org.codehaus</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
