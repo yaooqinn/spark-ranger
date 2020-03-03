@@ -50,6 +50,27 @@ class RangerSparkAuthorizerExtensionTest extends FunSuite {
     assert(extension.apply(newPlan) === newPlan)
   }
 
+  test("mixed rules can not be excluded via a set command") {
+    val df = spark.sql("SET spark.sql.optimizer.excludedRules=some.namespace.classname,org.apache.spark.sql.execution.RangerSparkPlanOmitStrategy")
+
+    intercept[SparkAccessControlException](extension.apply(df.queryExecution.optimizedPlan))
+  }
+
+  test("multiple ranger rules can not be excluded via a set command") {
+    val df = spark.sql("SET spark.sql.optimizer.excludedRules=org.apache.spark.sql.execution.RangerSparkMaskingExtension,org.apache.spark.sql.execution.RangerSparkPlanOmitStrategy")
+
+    intercept[SparkAccessControlException](extension.apply(df.queryExecution.optimizedPlan))
+  }
+
+  test("empty rules on excludedRules should be accepted") {
+    val df = spark.sql("SET spark.sql.optimizer.excludedRules;")
+
+    val plan = df.queryExecution.optimizedPlan
+    val newPlan = extension.apply(plan)
+    assert(newPlan.isInstanceOf[SetCommand])
+    assert(extension.apply(newPlan) === newPlan)
+  }
+
   test("convert show databases command") {
     val df = spark.sql("show databases")
     val plan = df.queryExecution.optimizedPlan
