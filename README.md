@@ -17,7 +17,7 @@ Currently, available profiles are:
 
 Spark: -Pspark-2.3, -Pspark2.4
 
-Ranger: -Pranger-1.0, -Pranger-1.1, -Pranger-1.2
+Ranger: -Pranger-1.0, -Pranger-1.1, -Pranger-1.2 -Pranger-2.0
 
 ## Usage
 
