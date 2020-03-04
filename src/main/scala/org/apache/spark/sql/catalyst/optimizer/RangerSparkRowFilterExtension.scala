@@ -56,14 +56,8 @@ case class RangerSparkRowFilterExtension(spark: SparkSession) extends Rule[Logic
         sparkPlugin.getClusterName)
       val result = sparkPlugin.evalRowFilterPolicies(request, auditHandler)
       if (isRowFilterEnabled(result)) {
-        val sql = s"select ${plan.output.map(_.name).mkString(",")} from ${table.qualifiedName}" +
-          s" where ${result.getFilterExpr}"
-        val parsed = spark.sessionState.sqlParser.parsePlan(sql)
-
-        val parsedNew = parsed transform {
-          case Filter(condition, child) if !child.fastEquals(plan) => Filter(condition, plan)
-        }
-        val analyzed = spark.sessionState.analyzer.execute(parsedNew)
+        val condition = spark.sessionState.sqlParser.parseExpression(result.getFilterExpr)
+        val analyzed = spark.sessionState.analyzer.execute(Filter(condition, plan))
         val optimized = analyzed transformAllExpressions {
           case s: SubqueryExpression =>
             val Subquery(newPlan) =
