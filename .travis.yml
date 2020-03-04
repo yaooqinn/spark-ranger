@@ -42,6 +42,10 @@ jobs:
       language: scala
       script:
         - mvn clean install -Pspark-2.3 -Pranger-1.2 -Dmaven.javadoc.skip=true -B -V
+    - stage: spark2.3-ranger-2.0
+      language: scala
+      script:
+        - mvn clean install -Pspark-2.3 -Pranger-2.0 -Dmaven.javadoc.skip=true -B -V
     - stage: spark2.4-ranger-1.0
       language: scala
       script:
@@ -54,6 +58,10 @@ jobs:
       language: scala
       script:
         - mvn clean install -Pspark-2.4 -Pranger-1.2 -Dmaven.javadoc.skip=true -B -V
+    - stage: spark2.4-ranger-2.0
+      language: scala
+      script:
+        - mvn clean install -Pspark-2.4 -Pranger-2.0 -Dmaven.javadoc.skip=true -B -V
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
