@@ -55,7 +55,7 @@
         <scala.binary.version>2.11</scala.binary.version>
         <scalatest.version>2.2.6</scalatest.version>
         <solr.version>5.5.4</solr.version>
-        <spark.version>2.3.2</spark.version>
+        <spark.version>2.3.4</spark.version>
         <spark.scope>provided</spark.scope>
     </properties>
     <dependencies>
@@ -463,7 +463,7 @@
         <profile>
             <id>spark-2.3</id>
             <properties>
-                <spark.version>2.3.3</spark.version>
+                <spark.version>2.3.4</spark.version>
                 <scalatest.version>3.0.3</scalatest.version>
             </properties>
         </profile>
@@ -471,7 +471,7 @@
         <profile>
             <id>spark-2.4</id>
             <properties>
-                <spark.version>2.4.3</spark.version>
+                <spark.version>2.4.5</spark.version>
                 <scalatest.version>3.0.3</scalatest.version>
             </properties>
         </profile>

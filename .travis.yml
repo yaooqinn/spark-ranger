@@ -10,7 +10,7 @@ cache:
     - ./build
 
 before_deploy:
-  - mvn package
+  - mvn clean package -DskipTests=true
 
 deploy:
   - provider: pages

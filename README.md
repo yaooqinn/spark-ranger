@@ -15,7 +15,7 @@ mvn clean package -Pspark-2.3 -Pranger-1.0 -DskipTests
 
 Currently, available profiles are:
 
-Spark: -Pspark-2.3, -Pspark2.4
+Spark: -Pspark-2.3, -Pspark-2.4
 
 Ranger: -Pranger-1.0, -Pranger-1.1, -Pranger-1.2 -Pranger-2.0
 
@@ -23,7 +23,7 @@ Ranger: -Pranger-1.0, -Pranger-1.1, -Pranger-1.2 -Pranger-2.0
 
 ### Installation
 
-Place the spark-ranger-<version>.jar into $SPARK_HOME/jars.
+Place the spark-ranger-&lt;version&gt;.jar into $SPARK_HOME/jars.
 
 ### Configurations
 
