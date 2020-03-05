@@ -477,6 +477,17 @@
         </profile>
 
         <profile>
+            <id>spark-3.0</id>
+            <properties>
+                <java.version>1.8</java.version>
+                <spark.version>3.0.0-preview2</spark.version>
+                <scala.version>2.12.10</scala.version>
+                <scala.binary.version>2.12</scala.binary.version>
+                <scalatest.version>3.0.8</scalatest.version>
+            </properties>
+        </profile>
+
+        <profile>
             <id>ranger-1.0</id>
             <properties>
                 <eclipse.jpa.version>2.5.2</eclipse.jpa.version>
