@@ -23,7 +23,7 @@ Ranger: -Pranger-1.0, -Pranger-1.1, -Pranger-1.2 -Pranger-2.0
 
 ### Installation
 
-Place the pre-built uber jar spark-ranger-&lt;version&gt;.jar into $SPARK_HOME/jars.
+Place the spark-ranger-<version>.jar into $SPARK_HOME/jars.
 
 ### Configurations
 
