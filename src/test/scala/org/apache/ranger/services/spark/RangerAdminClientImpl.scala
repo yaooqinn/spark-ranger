@@ -22,10 +22,10 @@ import java.util
 
 import com.google.gson.GsonBuilder
 import org.apache.commons.logging.{Log, LogFactory}
-import org.apache.ranger.admin.client.RangerAdminClient
+import org.apache.ranger.admin.client.RangerAdminRESTClient
 import org.apache.ranger.plugin.util.{GrantRevokeRequest, ServicePolicies, ServiceTags}
 
-class RangerAdminClientImpl extends RangerAdminClient {
+class RangerAdminClientImpl extends RangerAdminRESTClient {
   private val LOG: Log = LogFactory.getLog(classOf[RangerAdminClientImpl])
   private val cacheFilename = "sparkSql_hive_jenkins.json"
   private val gson =
