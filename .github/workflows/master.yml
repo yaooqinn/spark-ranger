@@ -1,4 +1,4 @@
-name: Githup Actions for Submarine Master Branch
+name: Githup Actions Master Branch
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       matrix:
         spark: [ '2.3', '2.4' ]
         ranger: [ '1.0', '1.1', '1.2', '2.0' ]
-    name: Build with Spark {{ matrix.spark }} / Ranger ${{ matrix.ranger }}
+    name: Build with Spark ${{ matrix.spark }} / Ranger ${{ matrix.ranger }}
 
     steps:
       - uses: actions/checkout@v2
@@ -25,5 +25,4 @@ jobs:
         with:
           version: 1.8
       - name: Build with Maven
-        run: |
-          - mvn clean install -Pspark-${{ matrix.spark }} -Pranger-${{ matrix.ranger }} -Dmaven.javadoc.skip=true -B -V
+        run: mvn clean install -Pspark-${{ matrix.spark }} -Pranger-${{ matrix.ranger }} -Dmaven.javadoc.skip=true -B -V
