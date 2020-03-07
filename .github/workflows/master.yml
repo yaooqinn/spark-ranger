@@ -1,4 +1,4 @@
-name: Githup Actions Master Branch
+name: CI
 
 on:
   push:
