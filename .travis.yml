@@ -1,0 +1,65 @@
+language: scala
+scala:
+  - 2.11.8
+jdk:
+  - openjdk8
+
+cache:
+  directories:
+    - $HOME/.m2
+
+before_deploy:
+  - mvn clean package -DskipTests=true
+
+deploy:
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    email: yaooqinn@hotmail.com
+    name: Kent Yao
+    on:
+      branch: master
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file: target/spark-ranger-*.jar
+    skip_cleanup: true
+    on:
+      tags: true
+
+matrix:
+  include:
+    - name: spark2.3-ranger-1.0
+      language: scala
+      env: $PROFILES="-Pspark-2.3 -Pranger-1.0"
+    - name: spark2.3-ranger-1.1
+      language: scala
+      env: $PROFILES="-Pspark-2.3 -Pranger-1.1"
+    - name: spark2.3-ranger-1.2
+      language: scala
+      env: $PROFILES="-Pspark-2.3 -Pranger-1.2"
+    - name: spark2.3-ranger-2.0
+      language: scala
+      env: $PROFILES="-Pspark-2.3 -Pranger-2.0"
+    - name: spark2.4-ranger-1.0
+      language: scala
+      env: $PROFILES="-Pspark-2.4 -Pranger-1.0"
+    - name: spark2.4-ranger-1.1
+      language: scala
+      env: $PROFILES="-Pspark-2.4 -Pranger-1.1"
+    - name: spark2.4-ranger-1.2
+      language: scala
+      env: $PROFILES="-Pspark-2.4 -Pranger-1.2"
+    - name: spark2.4-ranger-2.0
+      language: scala
+      env: $PROFILES="-Pspark-2.4 -Pranger-2.0"
+
+script:
+  - mvn clean install $PROFILES -Dmaven.javadoc.skip=true -B -V
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  - echo "Travis exited with ${TRAVIS_TEST_RESULT}"
+
+after_failure:
+  - echo "Travis exited with ${TRAVIS_TEST_RESULT}"
