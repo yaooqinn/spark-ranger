@@ -7,7 +7,6 @@ jdk:
 cache:
   directories:
     - $HOME/.m2
-    - ./build
 
 before_deploy:
   - mvn clean package -DskipTests=true
@@ -28,40 +27,39 @@ deploy:
     on:
       tags: true
 
-jobs:
+matrix:
   include:
-    - stage: spark2.3-ranger-1.0
+    - name: spark2.3-ranger-1.0
       language: scala
-      script:
-        - mvn clean install -Pspark-2.3 -Pranger-1.0 -Dmaven.javadoc.skip=true -B -V
-    - stage: spark2.3-ranger-1.1
+      env: $PROFILES="-Pspark-2.3 -Pranger-1.0"
+    - name: spark2.3-ranger-1.1
       language: scala
-      script:
-        - mvn clean install -Pspark-2.3 -Pranger-1.1 -Dmaven.javadoc.skip=true -B -V
-    - stage: spark2.3-ranger-1.2
+      env: $PROFILES="-Pspark-2.3 -Pranger-1.1"
+    - name: spark2.3-ranger-1.2
       language: scala
-      script:
-        - mvn clean install -Pspark-2.3 -Pranger-1.2 -Dmaven.javadoc.skip=true -B -V
-    - stage: spark2.3-ranger-2.0
+      env: $PROFILES="-Pspark-2.3 -Pranger-1.2"
+    - name: spark2.3-ranger-2.0
       language: scala
-      script:
-        - mvn clean install -Pspark-2.3 -Pranger-2.0 -Dmaven.javadoc.skip=true -B -V
-    - stage: spark2.4-ranger-1.0
+      env: $PROFILES="-Pspark-2.3 -Pranger-2.0"
+    - name: spark2.4-ranger-1.0
       language: scala
-      script:
-        - mvn clean install -Pspark-2.4 -Pranger-1.0 -Dmaven.javadoc.skip=true -B -V
-    - stage: spark2.4-ranger-1.1
+      env: $PROFILES="-Pspark-2.4 -Pranger-1.0"
+    - name: spark2.4-ranger-1.1
       language: scala
-      script:
-        - mvn clean install -Pspark-2.4 -Pranger-1.1 -Dmaven.javadoc.skip=true -B -V
-    - stage: spark2.4-ranger-1.2
+      env: $PROFILES="-Pspark-2.4 -Pranger-1.1"
+    - name: spark2.4-ranger-1.2
       language: scala
-      script:
-        - mvn clean install -Pspark-2.4 -Pranger-1.2 -Dmaven.javadoc.skip=true -B -V
-    - stage: spark2.4-ranger-2.0
+      env: $PROFILES="-Pspark-2.4 -Pranger-1.2"
+    - name: spark2.4-ranger-2.0
       language: scala
-      script:
-        - mvn clean install -Pspark-2.4 -Pranger-2.0 -Dmaven.javadoc.skip=true -B -V
+      env: $PROFILES="-Pspark-2.4 -Pranger-2.0"
+
+script:
+  - mvn clean install $PROFILES -Dmaven.javadoc.skip=true -B -V
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - echo "Travis exited with ${TRAVIS_TEST_RESULT}"
+
+after_failure:
+  - echo "Travis exited with ${TRAVIS_TEST_RESULT}"
