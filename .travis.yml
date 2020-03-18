@@ -55,7 +55,7 @@ matrix:
       env: $PROFILES="-Pspark-2.4 -Pranger-2.0"
 
 script:
-  - mvn clean install $PROFILES -Dmaven.javadoc.skip=true -B -V
+  - mvn --no-transfer-progress clean install $PROFILES -Dmaven.javadoc.skip=true -B -V
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

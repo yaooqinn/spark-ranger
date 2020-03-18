@@ -1,3 +1,18 @@
+# Notice:
+
+This library has been contribute to https://github.com/apache/submarine as a sub-module,
+and that module can still be used individually.
+
+The project here will no longer be updated.
+ 
+If you have any questions please go to 
+
+https://github.com/apache/submarine/tree/master/docs/submarine-security/spark/README.md
+
+to learn how to use and give feedback to the apache submarine community by following 
+https://submarine.apache.org/community/contributors.html
+
+
 # Spark SQL Ranger Security Plugin [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) [![](https://tokei.rs/b1/github/yaooqinn/spark-ranger)](https://github.com/yaooqinn/spark-ranger)  [![codecov](https://codecov.io/gh/yaooqinn/spark-ranger/branch/master/graph/badge.svg)](https://codecov.io/gh/yaooqinn/spark-ranger) [![Build Status](https://travis-ci.com/yaooqinn/spark-ranger.svg?branch=master)](https://travis-ci.com/yaooqinn/spark-ranger) [![HitCount](http://hits.dwyl.io/yaooqinn/spark-ranger.svg)](http://hits.dwyl.io/yaooqinn/spark-ranger)
 
 ACL Management for Apache Spark SQL with Apache Ranger, enabling:
