@@ -38,7 +38,10 @@ Ranger: -Pranger-1.0, -Pranger-1.1, -Pranger-1.2 -Pranger-2.0
 
 ### Installation
 
-Place the spark-ranger-&lt;version&gt;.jar into $SPARK_HOME/jars.
+Place the spark-ranger-&lt;version&gt;.jar and dependencies list below into $SPARK_HOME/jars on all nodes.
+
+- gethostname4j-0.0.3.jar
+- jna-5.5.0.jar
 
 ### Configurations
 
@@ -116,6 +119,14 @@ Create ranger-spark-audit.xml in $SPARK_HOME/conf and add the following configur
 </configuration>
 
 ```
+Note: Because the Ranger Admin does use Hadoop 3 Hive libraries, listing databases, tables and columns do not work in Ranger Admin. To configure listing capabality put below files in $RANGER_HOME/ews/webapp/WEB-INF/lib/ :
+
+- hive-exec-1.2.1.spark2.jar (Hadoop 3 compatible version needed. You can download from [here](https://github.com/guangie88/hive-exec-jar).
+- hive-jdbc-1.2.1.spark2.jar (Available on Spark Jars folder)
+- hive-metastore-1.2.1.spark2.jar (Available on Spark Jars folder)
+- hive-service-1.2.1.jar (Download from internet)
+
+and ranger-admin restart. Boom!
 
 #### Enable plugin via spark extensions
 
