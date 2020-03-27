@@ -40,6 +40,10 @@ Ranger: -Pranger-1.0, -Pranger-1.1, -Pranger-1.2 -Pranger-2.0
 
 Place the spark-ranger-&lt;version&gt;.jar into $SPARK_HOME/jars.
 
+### Installation Addons
+
+You can find some tips and known problems about this library here[docs/installation_addons.md].
+
 ### Configurations
 
 #### Ranger admin client configurations
