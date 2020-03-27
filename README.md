@@ -42,7 +42,7 @@ Place the spark-ranger-&lt;version&gt;.jar into $SPARK_HOME/jars.
 
 ### Installation Addons
 
-You can find some tips and known problems about this library [here](docs/installation_addons.md).
+You can find some tips and known problems about this library [here](docs/installation-addons.md).
 
 ### Configurations
 
